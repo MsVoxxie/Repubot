@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { trimString } = require('../../functions/helpers/stringFormatters');
 const UserReputation = require('../../models/userReputation');
 
 module.exports = {
@@ -43,6 +44,7 @@ module.exports = {
 						timestamp: Date.now(),
 					},
 				},
+				$inc: { userRep: affinity === 'Positive' ? 1 : -1 },
 			},
 			{ upsert: true, new: true }
 		);
@@ -50,14 +52,15 @@ module.exports = {
 		// Get the total reviews for the user
 		const userReputation = await UserReputation.findOne({ userId: user.id });
 		const totalReviews = userReputation.userReviews.length;
+		const userRep = userReputation.userRep;
 
 		// Build an embed to tell the user they were reviewed
 		const embed = new EmbedBuilder()
 			.setTitle('User Review')
 			.setColor(client.color)
 			.setThumbnail(user.displayAvatarURL())
-			.setDescription(`Hey, ${user}\nYou have been reviewed by ${interaction.user}!\n\n**__[Here is the review]__**\n${review}\n`)
-			.setFooter({ text: `Affinity: ${affinity} | Total Reviews: ${totalReviews}` })
+			.setDescription(`Hey, ${user}\nYou have been reviewed by ${interaction.user}!\n\n**__[Here is the review]__**\n${trimString(review, 800)}\n`)
+			.setFooter({ text: `Affinity: ${affinity} | Total Reviews: ${totalReviews} | User Rep: ${userRep}` })
 			.setTimestamp();
 
 		// Send the embed
