@@ -34,7 +34,7 @@ module.exports = {
 			.setTitle(`${member.displayName}'s Reputation`)
 			.setColor(client.color)
 			.setThumbnail(member.displayAvatarURL())
-			.setDescription(`**[Reputation]**\n${reputationToString(userRep)}\n\n**Total Reviews)** ${totalReviews}`)
+			.setDescription(`**[Reputation]**\n${reputationToString(userRep)} (${userRep})\n\n**Total Reviews)** ${totalReviews}`)
 			.setTimestamp();
 
 		// Send the embed
