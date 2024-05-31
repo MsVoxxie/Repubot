@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { dateToLongDate } = require('../../functions/helpers/dateFormatters');
-const { trimString } = require('../../functions/helpers/stringFormatters');
+const { trimString, reputationToString } = require('../../functions/helpers/stringFormatters');
 const UserReputation = require('../../models/userReputation');
 
 module.exports = {
@@ -27,6 +27,9 @@ module.exports = {
 		const userReputation = await UserReputation.findOne({ userId: member.id });
 		if (!userReputation?.userReviews.length) return interaction.followUp({ content: 'This user has no reviews yet.', ephemeral: true });
 
+		// Get the user's reputation level
+		const reputationLevel = reputationToString(userReputation.userRep);
+
 		// Segment the reviews into chunks of 5
 		const reviewChunks = [];
 		for (let i = 0; i < userReputation.userReviews.length; i += 5) {
@@ -44,10 +47,10 @@ module.exports = {
 			});
 
 			const embed = new EmbedBuilder()
-				.setTitle(`${member.displayName}'s Reviews`)
+				.setTitle(`${member.displayName}`)
 				.setColor(client.color)
 				.setThumbnail(member.displayAvatarURL())
-				.setDescription(formattedReviews.join('\n\n'))
+				.setDescription(`**${reputationLevel}**\n\n${formattedReviews.join('\n\n')}`)
 				.setFooter({ text: `Page ${embeds.length + 1} of ${reviewChunks.length}` })
 				.setTimestamp();
 			embeds.push(embed);
