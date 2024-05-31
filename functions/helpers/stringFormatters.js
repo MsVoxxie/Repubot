@@ -14,7 +14,7 @@ function reputationToString(reputation) {
 	else if (reputation < -10) reputationLevel = 'Soaked in Milk.';
 	else if (reputation < -5) reputationLevel = 'Rather Jiggly.';
 	else if (reputation === 0) reputationLevel = 'Neutral.';
-	else if (reputation < 5) reputationLevel = 'Microwaveable Friend. ';
+	else if (reputation < 5) reputationLevel = 'Microwaveable Friend.';
 	else if (reputation < 10) reputationLevel = 'Gooey Treat.';
 	else if (reputation < 25) reputationLevel = 'Yammy Individual';
 	else if (reputation < 50) reputationLevel = 'High Demand Creature.';
