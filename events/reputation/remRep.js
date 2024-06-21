@@ -8,9 +8,6 @@ module.exports = {
 		// Ignore bots
 		if (reactor.bot) return;
 
-		// Fetch partials
-		if (reaction.message.partial) await reaction.message.fetch();
-
 		// Check for correct reaction
 		if (reaction.emoji.name !== '📉') return;
 
